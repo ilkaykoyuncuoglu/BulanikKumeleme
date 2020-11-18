@@ -1,0 +1,396 @@
+---
+title: "BULANIK(FUZZY) KÜMELEME"
+author: "İlkay KOYUNCUOĞLU"
+date: "5/16/2020"
+output:
+  beamer_presentation:
+    theme: Ilmenau
+    colortheme: seahorse
+    fonttheme: structurebold
+    
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,collapse=T)
+```
+
+
+# FUZZY CLUSTERING(BULANIK KÜMELEME):
+
+Bulanık küme, bir kitlenin nesnelerine [0,1] aralığından bir üyelik derecesi atar. Bulanık mantık, önermelere doğruluk dereceleri atayarak ortaya çıkar. Keskin kümelerden farklı olarak, bulanık bir küme, “0” nesne kümeye hiç ait değildir ve “1” nesne kümeye aittir bununla birlikte diğer üyelik derecesi ile tanımlanan nesneler kısmi bir kümeye aitliği verir. 
+
+---
+
+# FUZZY CLUSTERING(BULANIK KÜMELEME):
+
+Bulanık kümeleme, veri noktalarının birden fazla kümeye ait olabileceği bir kümeleme yöntemidir. Hesaplamalı olarak, bulanık sınırlar oluşturmak bir nokta için bir kümeye yerleşmekten çok daha kolaydır.
+
+---
+
+# Algoritmalar:
+
+## Klasik bulanık kümeleme algoritmaları:
+
+**Bulanık C-Ortalamalar algoritması (FCM):** Bu yaygın olarak kullanılan algoritma pratik olarak k-ortalamalar algoritması ile aynıdır. Bir veri noktası teorik olarak 0 ile 1 arasında bir üyelik derecesi olan tüm gruplara ait olabilir; burada: 0, veri noktasının bir kümenin merkezinden mümkün olan en uzak noktada olduğu ve 1'in verilerin merkezinde olduğu yerdir.
+
+Alt tipler arasında Olasılıksal C-Ortalamalar (PCM), Bulanık Olasılıklı C-Ortalamalar (FPCM) ve Olasılıklı Bulanık C-Ortalamalar (PFCM) bulunur.
+
+# Algoritmalar:
+
+## Klasik bulanık kümeleme algoritmaları:
+
+**Gustafson-Kessel algoritması (GK):** Bir veri noktasını bir küme ve bir matrisle ilişkilendirir. C-araçları kümelerin küresel olduğunu varsayarken, GK eliptik şekilli kümelere sahiptir.
+
+**Gath-Geva algoritması(Gauss Karışımı Ayrışımı olarak da bilinir):** FCM'ye benzer, ancak kümeler herhangi bir şekle sahip olabilir.
+
+---
+
+# Algoritmalar:
+
+## Şekil tabanlı bulanık kümeleme algoritmaları:
+
+**Dairesel şekilli:** Dairesel şekilli (CS) algoritmalar, verileri dairesel bir şekle işaret eden kısıtlamalardır. Bu algoritma Bulanık C-Ortalamalara dâhil edildiğinde buna CS-FCM denir.
+
+**Eliptik şekilli:** Noktaları eliptik şekillerle sınırlayan bir algoritma. GK algoritmasında kullanılır.
+
+**Jenerik şekilli:** Çoğu gerçek yaşam nesnesi eliptik değil dairesel değildir bu sebeple jenerik algoritma herhangi bir şekildeki kümelere izin verir.
+
+---
+
+
+# Bulanık c-means Algoritmasının Yapısı:
+
+Bulanık c-means (FCM) algoritması, bulanık bölünmeli kümeleme tekniklerinden en iyi bilinen ve yaygın kullanılan yöntemdir. Bulanık c-means algoritması 1973 yılında Dunn tarafından ortaya atılmış ve 1981’ de Bezdek tarafından geliştirilmiştir (Höppner vd., 2000). Bulanık c-means algoritması da amaç fonksiyonu temelli bir metottur. 
+
+Bulanık c-means metodu, nesnelerin iki veya daha fazla kümeye ait olabilmesine izin verir. Bulanık mantık prensibi gereği her veri, kümelerin her birine [0,1] arasında değişen birer üyelik değeri ile aittir. 
+
+# Bulanık c-means Algoritmasının Yapısı:
+
+Bir verinin tüm sınıflara olan üyelik değerleri toplamı “1” olmalıdır. Nesne hangi küme merkezine yakın ise o kümeye ait olma üyeliği diğer kümelere ait olma üyeliğinden daha büyük olacaktır. Amaç fonksiyonun belirlenen minimum ilerleme değerine yakınsaklaşmasıyla kümeleme işlemi tamamlanır.
+
+---
+
+# Bulanık c-means Algoritmasının Formülleri:
+
+Algoritma, en küçük kareler yönteminin genellemesi olan aşağıdaki amaç fonksiyonunu öteleyerek minimize etmek için çalışır (Höppner vd., 2000).
+
+$J_{m}=\sum_{i=1}^N \sum_{j=1}^C u_{ij}^m \left\Vert x_{i}-c_{j}\right\Vert^2,      \qquad 1\leq m\leq \infty$       (1)                          
+                              
+U üyelik matrisi rasgele atanarak algoritma başlatılır. İkinci adımda ise merkez vektörleri hesaplanır. Merkezler (2) nolu eşitlik ile hesaplanır (Höppner vd., 2000).
+
+$C_{j}=\frac{\sum_{i=1}^Nu_{ij}^mx_{i}}{\sum_{i=1}^Nu_{ij}^m}$       (2)                       
+
+# Bulanık c-means Algoritmasının Formülleri:
+
+Hesaplanan küme merkezlerine göre, U matrisi (3) nolu eşitlik kullanılarak yeniden hesaplanır. Eski U matrisi ile yeni U matrisi karşılaştırılır ve fark $\epsilon$’dan küçük olana kadar işlemler devam eder (Moertini, 2002).
+
+$u_{ij}=(\sum_{k=1}^c (\frac{\left\Vert x_{i}-c_{i}\right\Vert}{\left\Vert x_{i}-c_{k}\right\Vert})^{2/m-1})^{-1}$          (3)   
+
+---
+
+# Bulanık c-means Algoritmasının Formülleri:
+
+Kümeleme işlemi sonucunda bulanık değerler içeren U üyelik matrisi kümelemenin sonucunu yansıtır. İstenirse, berraklaştırma yapılarak bu değerler yuvarlanıp 0 ve 1’lere dönüştürülebilir.
+
+FCM algoritmasını kullanmadan önce aşağıdaki parametreler belirtilmelidir:
+
+*	Küme sayısı, c
+
+*	Bulanıklık üssü, m
+
+*	Sonlandırma toleransı, ($\epsilon$)
+
+---
+
+## Avantajları:
+
+1.	Çakışan veri kümesi için en iyi sonucu verir ve k-ortalama algoritmasından daha iyi sonuç verir.
+
+2.	Veri noktasının sadece bir küme merkezine ait olması gerektiği k-araçlarından farklı olarak, burada veri noktasına her küme merkezine üyelik atanır, bunun sonucunda veri noktası birden fazla küme merkezine ait olabilir.
+
+## Dezavantajları:
+
+1.	Düşük değeri ile daha iyi sonuç elde ederiz, ancak daha fazla yineleme pahasına yaparız.
+
+2.	Öklid uzaklık ölçütleri eşit derecede ağırlık altında yatan faktörleri içerebilir.
+
+---
+
+ **Kütüphaneler:**
+ 
+```{r warning=FALSE, message=FALSE}
+library(cluster)
+library(factoextra)
+library(e1071)
+library(corrplot)
+library(fclust)
+library(dplyr)
+require(ppclust)
+library(clValid)
+```
+
+# USArrest Verisi İle k-means Yöntemi
+
+ USArrest verisi ile ilk önce k-means yöntemi uygulaması yapıldı.
+ 
+ - Verinin okutulması ve özet istatistikler
+ 
+```{r out.width = '20%',out.height='20%'}
+data=USArrests
+summary(data)
+```
+
+
+# USArrest Verisi İle k-means Yöntemi
+
+ - Temel bileşenler analizi uygulanması ve seçilen temel bileşenlerin belirlenmesi;
+
+```{r out.width = '55%'}
+pca = prcomp(data, center = TRUE, scale. = TRUE)
+summary(pca)
+data_new=pca$x[,1:2]
+```
+
+# USArrest Verisi İle k-means Yöntemi
+
+ - Optimal küme sayısının belirlenmesi için temel bileşenler analizi üzerinden görselleştirme yapılarak küme sayısı belirlendi. Daha önce üzerinde derste çalışıldığı için küme sayısı 3 olarak belirlendi.
+ 
+```{r out.width = '45%'}
+fviz_nbclust(data_new,kmeans,method="wss")
+```
+
+```{r out.width='50%'}
+sonuc=kmeans(data_new,3)
+sonuc$cluster
+sonuc$centers
+```
+
+# USArrest Verisi İle k-means Yöntemi
+
+ - Her kümenin kaç nokta içerdiğinin gösterilmesi;
+ 
+```{r out.width = '50%'}
+table(sonuc$cluster)
+plot(data_new,col=sonuc$cluster,lwd=2)
+```
+
+# USArrest Verisi İle k-means Yöntemi Görselleştirme
+
+ Kümelerin grafiksel gösterimi;
+ 
+```{r out.width = '50%'}
+fviz_cluster(sonuc, data = data,ellipse.type = "euclid", 
+      star.plot = TRUE,repel = TRUE, 
+      ggtheme = theme_minimal()
+)
+```
+
+# USArrest Verisi İle Fuzzy Yöntemi
+
+```{r out.width = '50%'}
+res_fanny_2=fanny(data,k=2,metric = "euclidean",stand =T)
+head(res_fanny_2$membership)
+res_fanny_2$coeff
+```
+
+# USArrest Verisi İle Fuzzy Yöntemi Görselleştirme
+
+```{r out.width = '50%'}
+fviz_cluster(res_fanny_2,ellipse.type = "norm",
+    repel = FALSE,palette="jco",
+    ggtheme = theme_minimal(),legend="right")
+```
+
+# Kümelenme sonuçlarının iyiliğini değerlendirmek için, silhoutte katsayısı: USArrest
+ 
+```{r out.width = '50%'}
+fviz_silhouette(res_fanny_2,palette = "jco",
+                ggtheme = theme_minimal())
+```
+
+# USArrest Verisi İle Fuzzy Yöntemi
+
+```{r out.width = '50%'}
+res_fanny_3=fanny(data,k=3,metric = "euclidean",stand =T)
+head(res_fanny_3$membership)
+res_fanny_3$coeff
+```
+
+# USArrest Verisi İle Fuzzy Yöntemi Görselleştirme
+
+```{r out.width = '50%'}
+fviz_cluster(res_fanny_3,ellipse.type = "norm",
+    repel = FALSE,palette="jco",
+    ggtheme = theme_minimal(),legend="right")
+```
+
+# Kümelenme sonuçlarının iyiliğini değerlendirmek için, silhoutte katsayısı: USArrest
+ 
+```{r out.width = '50%'}
+fviz_silhouette(res_fanny_3,palette = "jco",
+                ggtheme = theme_minimal())
+```
+
+
+# İris Verisi ile k-means Yöntemi
+
+ - Verimizi okuttuktan sonra türlerle ilgili bir işlem yapmayacağımız için son sütunu verimizden çıkartıyoruz.
+ 
+```{r out.width = '40%'}
+data_iris=iris
+data_iris=data_iris[,-5]
+```
+
+# İris Verisi ile k-means Yöntemi
+
+ - Boxplot'a baktığımzda değişkenlerin ortalamalarının ve değişkenliklerinin birbirinden farklı olduğu gözükmektedir.
+
+```{r out.width = '62%'}
+boxplot(data_iris)
+```
+
+# İris Verisi ile k-means Yöntemi
+
+ - Veri seti scale edilerek değişkenlikten arındırılır. Ardından wss yöntemi ile küme sayısı belirlenir.
+
+```{r out.width = '50%'}
+data_new_iris=scale(data_iris[,3:4])
+library(factoextra)
+fviz_nbclust(data_new_iris,kmeans,method="wss")
+```
+
+# İris Verisi ile k-means Yöntemi:
+
+```{r out.width = '53%'}
+fviz_nbclust(data_new_iris,kmeans,method="silhouette")
+```
+
+# İris Verisi ile k-means Yöntemi
+
+```{r out.width = '45%'}
+sonuc_iris=kmeans(data_new_iris,3)
+sonuc_iris$iter
+table(sonuc_iris$cluster)
+```
+
+# İris Verisi ile k-means Yöntemi Görselleştirmesi
+
+ - Belirlenen kümelere göre görselleştirme yapılması;
+
+```{r out.width = '50%'}
+fviz_cluster(sonuc_iris, data = data_new_iris,
+ ellipse.type = "euclid", star.plot = TRUE,
+repel = TRUE, ggtheme = theme_minimal())
+```
+
+
+# Küme Sayısı Belirlenmesi:
+
+```{r warning=FALSE, out.width = '50%'}
+# WSS method
+fviz_nbclust(data_iris, fanny, method = "wss",
+diss = (dist(data_iris,method = "euclidean"))^2)+
+labs(subtitle = "WSS method")
+```
+
+# Küme Sayısı Belirlenmesi:
+
+```{r out.width = '48%',warning=FALSE}
+fviz_nbclust(data_iris, fanny, method = "silhouette",
+diss = (dist(data_iris,method = "euclidean"))^2)+
+labs(subtitle = "Silhouette method")
+```
+
+# İris Verisi ile Fuzzy Yöntemi 2 Küme:
+
+```{r }
+iris_fcm <- fanny(data_iris,2,metric="SqEuclidean") 
+iris_fcm$objective
+iris_fcm$convergence
+```
+
+# İris Verisi ile Fuzzy Yöntemi 2 Küme:
+
+```{r}
+head(iris_fcm$membership,6)
+iris_fcm$coeff
+```
+
+
+# İris Verisi ile Fuzzy Görselleştirme 2 Küme:
+
+```{r out.width='53%'}
+fviz_cluster(iris_fcm,ellipse.type = "norm",
+repel=TRUE,palette="jco",
+             ggtheme = theme_minimal(),legend="right")
+```
+
+# İris Verisi ile Fuzzy Yöntemi 3 Küme:
+
+```{r}
+iris_fcm_3 <- fanny(data_iris,3,metric="SqEuclidean") 
+iris_fcm_3$objective
+iris_fcm_3$convergence
+```
+
+# İris Verisi ile Fuzzy Yöntemi 3 Küme:
+
+```{r}
+head(iris_fcm_3$membership,6)
+iris_fcm_3$coeff
+```
+
+
+# İris Verisi ile Fuzzy Görselleştirme 3 Küme:
+
+```{r out.width='45%'}
+fviz_cluster(iris_fcm_3,ellipse.type = "convex",
+repel=TRUE,palette="jco",
+ggtheme = theme_minimal(),legend="right")
+```
+
+# Kümelenme sonuçlarının iyiliğini değerlendirmek için, silhoutte katsayısı: İris
+
+```{r out.width='40%'}
+fviz_silhouette(iris_fcm,palette="jco",
+                ggtheme = theme_minimal())
+```
+
+# Kümelenme sonuçlarının iyiliğini değerlendirmek için, silhoutte katsayısı: İris
+
+```{r out.width='40%'}
+fviz_silhouette(iris_fcm_3,palette="jco",
+                ggtheme = theme_minimal())
+```
+
+# Kümelenme sonuçlarının iyiliğini değerlendirmek için, silhoutte katsayısı: İris k-means
+
+```{r out.width='40%'}
+fviz_silhouette(sonuc_iris,palette="jco",
+                ggtheme = theme_minimal())
+```
+
+# Sonuç
+
+Bulanık kümeleme k-means kümelemeye bir alternatiftir. Her veri noktasının her kümeye dair üyelik katsayısı belirlenir.
+Bu sunumda iris ve USArrest veri seti ile k-means ve bulanık kümeleme yöntemlerine dair örnekler açıklandı.
+İris veri seti için 3 küme uygunken 2 küme hem k-means hem de bulanık kümeleme yönteminde daha uygun çıkmıştır. Fakat label bilindiği için 3 kümede karar kılındı.
+USArrest veri seti için k-means 3 küme olduğu bilindiği varsayılarak yapılmıştır fakat bulanık yöntemle 2-3 denenmiştir.
+Her iki veri seti için de 2 küme daha iyi sonuçlar vermiştir.
+
+# Kaynakça
+
+ 1. Işık, M., & Çamurcu, A. Y. K-Means, K-Medoıds Ve Bulanık C-Means Algoritmalarının Uygulamalı Olarak Performanslarının Tespiti.
+ 2. Sinh, MD Ve Long, NT (2016). Çok Spektrumlu Uydu Görüntüleri Sınıflandırması İçin Bulanık Olasılık Ve Bulanık Kümelenmeyi Birleştirme. Vietnam Bilim Ve Teknoloji Dergisi , 54 (3), 300.
+ 3. https://www.ijert.org/research/comparitive-analysis-of-k-means-and-fuzzy-c-means-algorithm-IJERTV2IS60338.pdf
+ 4. https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Fuzzy_Clustering.pdf
+ 5. https://www.computerworld.com/article/2566110/sidebar--the-history-of-fuzzy-logic.html
+ 6. https://plato.stanford.edu/entries/logic-fuzzy/
+ 7. https://www.britannica.com/science/fuzzy-logic
+ 8. https://www.statisticshowto.com/fuzzy-clustering/
+ 9.https://towardsdatascience.com/a-very-brief-introduction-to-fuzzy-logic-and-fuzzy-systems-d68d14b3a3b8
+ 10. https://www.datanovia.com/en/?s=fuzzy&search-type=default
+ 11. https://reference.wolfram.com/legacy/applications/fuzzylogic/Manual/12.html
+ 12. http://researchhubs.com/post/ai/fundamentals/fuzzy-c-means.html
+ 13. https://www.hindawi.com/journals/afs/2018/2634861/
